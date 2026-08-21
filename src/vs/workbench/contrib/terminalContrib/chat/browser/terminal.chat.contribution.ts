@@ -19,6 +19,7 @@ AccessibleViewRegistry.register(new TerminalInlineChatAccessibleView());
 AccessibleViewRegistry.register(new TerminalChatAccessibilityHelp());
 
 registerWorkbenchContribution2(TerminalChatEnabler.Id, TerminalChatEnabler, WorkbenchPhase.AfterRestored);
+registerWorkbenchContribution2(TerminalAttachToChatContribution.ID, TerminalAttachToChatContribution, WorkbenchPhase.AfterRestored);
 
 // #endregion
 
@@ -29,6 +30,7 @@ import { AccessibleViewRegistry } from '../../../../../platform/accessibility/br
 import { TerminalChatAccessibilityHelp } from './terminalChatAccessibilityHelp.js';
 import { registerWorkbenchContribution2, WorkbenchPhase } from '../../../../common/contributions.js';
 import { TerminalChatEnabler } from './terminalChatEnabler.js';
+import { TerminalAttachToChatContribution } from './terminalAttachToChat.js';
 import { InstantiationType, registerSingleton } from '../../../../../platform/instantiation/common/extensions.js';
 import { ITerminalChatService } from '../../../terminal/browser/terminal.js';
 import { TerminalChatService } from './terminalChatService.js';

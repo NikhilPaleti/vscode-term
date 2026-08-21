@@ -169,3 +169,23 @@ export namespace TerminalContextKeys {
 		)
 	);
 }
+
+/**
+ * True when a dictation engine is available for the terminal: either the
+ * built-in on-device engine (with AI features enabled) or the speech
+ * extension's provider. Used to gate dictation entry points so they only show
+ * when dictation can actually be started.
+ *
+ * The keys are referenced by name rather than importing their declarations so
+ * the terminal does not depend on the speech and chat contributions. Keep in
+ * sync with `HasSpeechProvider` in `contrib/speech/common/speechService.ts` and
+ * `ChatContextKeys.enabled` / `ChatContextKeys.speechToTextConfigured` in
+ * `contrib/chat/common/actions/chatContextKeys.ts`.
+ */
+export const TerminalDictationAvailable = ContextKeyExpr.or(
+	ContextKeyExpr.has('hasSpeechProvider'),
+	ContextKeyExpr.and(
+		ContextKeyExpr.has('chatIsEnabled'),
+		ContextKeyExpr.has('chatSpeechToTextConfigured')
+	)
+)!;
