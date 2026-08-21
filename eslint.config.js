@@ -2186,6 +2186,103 @@ export default defineConfig(
 					]
 				},
 				{
+					'target': 'src/vs/terminalApp/terminalApp.common.main.ts',
+					'layer': 'browser',
+					'restrictions': [
+						'vs/base/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/editor/~',
+						'vs/editor/contrib/*/~',
+						'vs/editor/editor.all.js',
+						'vs/terminalApp/~',
+						'vs/terminalApp/services/*/~',
+						'vs/terminalApp/contrib/*/~',
+						'vs/workbench/~',
+						'vs/workbench/api/~',
+						'vs/workbench/services/*/~',
+						'vs/workbench/contrib/*/~',
+					]
+				},
+				{
+					'target': 'src/vs/terminalApp/terminalApp.desktop.main.ts',
+					'layer': 'electron-browser',
+					'restrictions': [
+						'vs/base/*/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/editor/~',
+						'vs/editor/contrib/*/~',
+						'vs/editor/editor.all.js',
+						'vs/terminalApp/~',
+						'vs/terminalApp/services/*/~',
+						'vs/terminalApp/contrib/*/~',
+						'vs/workbench/~',
+						'vs/workbench/api/~',
+						'vs/workbench/services/*/~',
+						'vs/workbench/contrib/*/~',
+						'vs/terminalApp/terminalApp.common.main.js'
+					]
+				},
+				{
+					'target': 'src/vs/terminalApp/electron-browser/terminalApp.ts',
+					'layer': 'electron-browser',
+					'restrictions': [
+						'vs/base/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/terminalApp/~',
+						'vs/terminalApp/terminalApp.desktop.main.js',
+						'vs/workbench/electron-browser/desktop.main.js' // type-only: IDesktopMain
+					]
+				},
+				{
+					'target': 'src/vs/terminalApp/~',
+					'restrictions': [
+						'vs/base/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/editor/~',
+						'vs/editor/contrib/*/~',
+						'vs/workbench/~',
+						'vs/workbench/browser/**',
+						'vs/workbench/services/*/~',
+						'vs/terminalApp/~',
+						'vs/terminalApp/services/*/~'
+					]
+				},
+				{
+					'target': 'src/vs/terminalApp/contrib/*/~',
+					'restrictions': [
+						'vs/base/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/editor/~',
+						'vs/editor/contrib/*/~',
+						'vs/workbench/~',
+						'vs/workbench/browser/**',
+						'vs/workbench/services/*/~',
+						'vs/workbench/contrib/*/~',
+						'vs/terminalApp/~',
+						'vs/terminalApp/contrib/*/~',
+						'vs/terminalApp/services/*/~',
+					]
+				},
+				{
+					'target': 'src/vs/terminalApp/services/*/~',
+					'restrictions': [
+						'vs/base/~',
+						'vs/base/parts/*/~',
+						'vs/platform/*/~',
+						'vs/editor/~',
+						'vs/editor/contrib/*/~',
+						'vs/workbench/~',
+						'vs/workbench/services/*/~',
+						'vs/terminalApp/~',
+						'vs/terminalApp/services/*/~'
+					]
+				},
+				{
 					'target': 'src/vs/sessions/~',
 					'restrictions': [
 						'vs/base/~',

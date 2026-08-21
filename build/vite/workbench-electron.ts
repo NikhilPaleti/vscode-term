@@ -3,6 +3,6 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import '../../src/vs/code/electron-browser/workbench/workbench';
+import '../../src/vs/terminalApp/electron-browser/terminalApp';
 import './setup-dev';
 
