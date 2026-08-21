@@ -77,9 +77,8 @@ const vscodeResourceIncludes = [
 	'out-build/nls.messages.json',
 	'out-build/nls.keys.json',
 
-	// Workbench
-	'out-build/vs/code/electron-browser/workbench/workbench.html',
-	'out-build/vs/sessions/electron-browser/sessions.html',
+	// Terminal window (the only shipped window)
+	'out-build/vs/terminalApp/electron-browser/terminalApp.html',
 
 	// Electron Preload
 	'out-build/vs/base/parts/sandbox/electron-browser/preload.js',
@@ -174,7 +173,7 @@ const bundleVSCodeTask = task.define('bundle-vscode', task.series(
 					...bootstrapEntryPoints
 				],
 				resources: vscodeResources,
-				skipTSBoilerplateRemoval: entryPoint => entryPoint === 'vs/code/electron-browser/workbench/workbench' || entryPoint === 'vs/sessions/electron-browser/sessions'
+				skipTSBoilerplateRemoval: entryPoint => entryPoint === 'vs/terminalApp/electron-browser/terminalApp'
 			}
 		}
 	)
@@ -278,15 +277,10 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 
 		const checksums = computeChecksums(out, [
 			'vs/base/parts/sandbox/electron-browser/preload.js',
-			'vs/workbench/workbench.desktop.main.js',
-			'vs/workbench/workbench.desktop.main.css',
-			'vs/workbench/api/node/extensionHostProcess.js',
-			'vs/code/electron-browser/workbench/workbench.html',
-			'vs/code/electron-browser/workbench/workbench.js',
-			'vs/sessions/sessions.desktop.main.js',
-			'vs/sessions/sessions.desktop.main.css',
-			'vs/sessions/electron-browser/sessions.html',
-			'vs/sessions/electron-browser/sessions.js'
+			'vs/terminalApp/terminalApp.desktop.main.js',
+			'vs/terminalApp/terminalApp.desktop.main.css',
+			'vs/terminalApp/electron-browser/terminalApp.html',
+			'vs/terminalApp/electron-browser/terminalApp.js'
 		]);
 
 		const src = gulp.src(out + '/**', { base: '.' })
@@ -563,6 +557,7 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 
 			result = es.merge(result, gulp.src('resources/win32/VisualElementsManifest.xml', { base: 'resources/win32' })
 				.pipe(replace('@@VERSIONFOLDER@@', versionedResourcesFolder ? `${versionedResourcesFolder}\\` : ''))
+				.pipe(replace('@@NAME_SHORT@@', product.nameShort))
 				.pipe(rename(product.nameShort + '.VisualElementsManifest.xml')));
 
 			result = es.merge(result, gulp.src('.build/policies/win32/**', { base: '.build/policies/win32' })

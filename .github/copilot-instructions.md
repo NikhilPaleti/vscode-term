@@ -25,6 +25,7 @@ Visual Studio Code is built with a layered architecture using TypeScript, web AP
 - `src/vs/code/` - Electron main process specific implementation
 - `src/vs/server/` - Server specific implementation
 - `src/vs/sessions/` - Agent sessions window, a dedicated workbench layer for agentic workflows (sits alongside `vs/workbench`, may import from it but not vice versa)
+- `src/vs/terminalApp/` - Terminal window, the only window this build ships: a terminal-only app that reuses the standard `Workbench` with a reduced contribution set (sits alongside `vs/workbench`, may import from it but not vice versa). See [its README](../src/vs/terminalApp/README.md); run `npm run terminal-app-budget` after changing imports there.
 
 The core architecture follows these principles:
 - **Layered architecture** - from `base`, `platform`, `editor`, to `workbench`

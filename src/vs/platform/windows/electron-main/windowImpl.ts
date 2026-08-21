@@ -1206,14 +1206,13 @@ export class CodeWindow extends BaseWindow implements ICodeWindow {
 		// Indicate we are navigting now
 		this.readyState = ReadyState.NAVIGATING;
 
-		// Load URL
+		// Load URL. The Terminal window is the only window this build ships; the
+		// workbench and Agents windows are not built (see `build/buildfile.ts`).
 		let windowUrl: string;
 		if (process.env.VSCODE_DEV && process.env.VSCODE_DEV_SERVER_URL) {
 			windowUrl = process.env.VSCODE_DEV_SERVER_URL; // support URL override for development
-		} else if (configuration.isSessionsWindow) {
-			windowUrl = FileAccess.asBrowserUri(`vs/sessions/electron-browser/sessions${this.environmentMainService.isBuilt ? '' : '-dev'}.html`).toString(true);
 		} else {
-			windowUrl = FileAccess.asBrowserUri(`vs/code/electron-browser/workbench/workbench${this.environmentMainService.isBuilt ? '' : '-dev'}.html`).toString(true);
+			windowUrl = FileAccess.asBrowserUri(`vs/terminalApp/electron-browser/terminalApp${this.environmentMainService.isBuilt ? '' : '-dev'}.html`).toString(true);
 		}
 		this._win.loadURL(windowUrl);
 

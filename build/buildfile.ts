@@ -20,6 +20,9 @@ export const workerProfileAnalysis = createModuleDescription('vs/platform/profil
 export const workerOutputLinks = createModuleDescription('vs/workbench/contrib/output/common/outputLinkComputerMain');
 export const workerBackgroundTokenization = createModuleDescription('vs/workbench/services/textMate/browser/backgroundTokenization/worker/textMateTokenizationWorker.workerMain');
 
+// The only shipped window is the Terminal window: `vs/workbench/workbench.desktop.main`
+// and `vs/sessions/sessions.desktop.main` are intentionally not built. Their sources
+// remain in the tree because the Terminal window imports from `vs/workbench`.
 export const workbenchDesktop = [
 	createModuleDescription('vs/workbench/contrib/debug/node/telemetryApp'),
 	createModuleDescription('vs/platform/files/node/watcher/watcherMain'),
@@ -27,9 +30,9 @@ export const workbenchDesktop = [
 	createModuleDescription('vs/platform/terminal/node/ptyHostMain'),
 	createModuleDescription('vs/platform/agentHost/node/agentHostMain'),
 	createModuleDescription('vs/platform/agentHost/node/diffWorkerMain'),
-	createModuleDescription('vs/workbench/api/node/extensionHostProcess'),
-	createModuleDescription('vs/workbench/workbench.desktop.main'),
-	createModuleDescription('vs/sessions/sessions.desktop.main')
+	// `vs/workbench/api/node/extensionHostProcess` is not built: the Terminal
+	// window registers `NullExtensionService`, so no extension host is spawned.
+	createModuleDescription('vs/terminalApp/terminalApp.desktop.main')
 ];
 
 export const workbenchWeb = createModuleDescription('vs/workbench/workbench.web.main.internal');
@@ -47,8 +50,7 @@ export const code = [
 	// 'vs/code/node/cli' is not included here because it comes in via ./src/cli.js
 	createModuleDescription('vs/code/node/cliProcessMain'),
 	createModuleDescription('vs/code/electron-utility/sharedProcess/sharedProcessMain'),
-	createModuleDescription('vs/code/electron-browser/workbench/workbench'),
-	createModuleDescription('vs/sessions/electron-browser/sessions'),
+	createModuleDescription('vs/terminalApp/electron-browser/terminalApp'),
 ];
 
 export const codeWeb = createModuleDescription('vs/code/browser/workbench/workbench');

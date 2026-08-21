@@ -148,6 +148,9 @@ logger.warn = (msg, options) => {
 	if (msg.indexOf('await import(new URL(`vs/workbench/workbench.desktop.main.js`, baseUrl).href)') !== -1) {
 		return;
 	}
+	if (msg.indexOf('await import(new URL(`vs/terminalApp/terminalApp.desktop.main.js`, baseUrl).href)') !== -1) {
+		return;
+	}
 	if (msg.indexOf('const result2 = await import(workbenchUrl);') !== -1) {
 		return;
 	}

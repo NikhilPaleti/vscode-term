@@ -95,24 +95,25 @@ const desktopWorkerEntryPoints = [
 	'vs/platform/profiling/electron-browser/profileAnalysisWorkerMain',
 ];
 
-// Desktop workbench and code entry points
+// Desktop workbench and code entry points. The only shipped window is the
+// Terminal window, so `vs/workbench/workbench.desktop.main` and
+// `vs/sessions/sessions.desktop.main` are not built.
 const desktopEntryPoints = [
-	'vs/workbench/workbench.desktop.main',
-	'vs/sessions/sessions.desktop.main',
+	'vs/terminalApp/terminalApp.desktop.main',
 	'vs/workbench/contrib/debug/node/telemetryApp',
 	'vs/platform/files/node/watcher/watcherMain',
 	'vs/platform/localTranscription/node/localTranscriptionMain',
 	'vs/platform/terminal/node/ptyHostMain',
 	'vs/platform/agentHost/node/agentHostMain',
 	'vs/platform/agentHost/node/diffWorkerMain',
-	'vs/workbench/api/node/extensionHostProcess',
+	// `vs/workbench/api/node/extensionHostProcess` is not built: the Terminal
+	// window registers `NullExtensionService`, so no extension host is spawned.
 ];
 
 const codeEntryPoints = [
 	'vs/code/node/cliProcessMain',
 	'vs/code/electron-utility/sharedProcess/sharedProcessMain',
-	'vs/code/electron-browser/workbench/workbench',
-	'vs/sessions/electron-browser/sessions',
+	'vs/terminalApp/electron-browser/terminalApp',
 ];
 
 // Web entry points (used in server-web and vscode-web)
@@ -214,10 +215,8 @@ function getCssBundleEntryPointsForTarget(target: BuildTarget): Set<string> {
 	switch (target) {
 		case 'desktop':
 			return new Set([
-				'vs/workbench/workbench.desktop.main',
-				'vs/code/electron-browser/workbench/workbench',
-				'vs/sessions/sessions.desktop.main',
-				'vs/sessions/electron-browser/sessions',
+				'vs/terminalApp/terminalApp.desktop.main',
+				'vs/terminalApp/electron-browser/terminalApp',
 			]);
 		case 'server':
 			return new Set(); // Server has no UI
@@ -259,10 +258,8 @@ const desktopResourcePatterns = [
 	...commonResourcePatterns,
 
 	// HTML
-	'vs/code/electron-browser/workbench/workbench.html',
-	'vs/code/electron-browser/workbench/workbench-dev.html',
-	'vs/sessions/electron-browser/sessions.html',
-	'vs/sessions/electron-browser/sessions-dev.html',
+	'vs/terminalApp/electron-browser/terminalApp.html',
+	'vs/terminalApp/electron-browser/terminalApp-dev.html',
 	'vs/workbench/services/extensions/worker/webWorkerExtensionHostIframe.html',
 	'vs/workbench/contrib/webview/browser/pre/*.html',
 
