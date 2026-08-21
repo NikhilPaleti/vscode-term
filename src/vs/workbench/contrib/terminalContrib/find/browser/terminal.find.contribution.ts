@@ -12,7 +12,8 @@ import { localize2 } from '../../../../../nls.js';
 import { ContextKeyExpr } from '../../../../../platform/contextkey/common/contextkey.js';
 import { IInstantiationService } from '../../../../../platform/instantiation/common/instantiation.js';
 import { KeybindingWeight } from '../../../../../platform/keybinding/common/keybindingsRegistry.js';
-import { findInFilesCommand } from '../../../search/browser/searchActionsBase.js';
+import { ICommandService } from '../../../../../platform/commands/common/commands.js';
+import { SearchCommandIds } from '../../../search/common/constants.js';
 import { IDetachedTerminalInstance, ITerminalContribution, ITerminalInstance, ITerminalService, IXtermTerminal, isDetachedTerminalInstance } from '../../../terminal/browser/terminal.js';
 import { registerActiveInstanceAction, registerActiveXtermAction } from '../../../terminal/browser/terminalActions.js';
 import { registerTerminalContribution, type IDetachedCompatibleTerminalContributionContext, type ITerminalContributionContext } from '../../../terminal/browser/terminalExtensions.js';
@@ -248,7 +249,9 @@ registerActiveInstanceAction({
 			weight: KeybindingWeight.WorkbenchContrib + 50
 		}
 	],
-	run: (activeInstance, c, accessor) => findInFilesCommand(accessor, { query: activeInstance.selection })
+	// Routed through the command registry rather than imported directly so the
+	// terminal does not depend on the search contribution.
+	run: (activeInstance, c, accessor) => accessor.get(ICommandService).executeCommand(SearchCommandIds.FindInFilesActionId, { query: activeInstance.selection })
 });
 
 // #endregion
