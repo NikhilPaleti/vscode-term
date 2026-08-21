@@ -86,6 +86,7 @@ function prepareDebPackage(arch: string) {
 			function () {
 				const that = this;
 				gulp.src('resources/linux/debian/control.template', { base: '.' })
+					.pipe(replace('@@NAME_LONG@@', product.nameLong))
 					.pipe(replace('@@NAME@@', product.applicationName))
 					.pipe(replace('@@VERSION@@', packageJson.version + '-' + linuxPackageRevision))
 					.pipe(replace('@@ARCHITECTURE@@', debArch))
@@ -109,11 +110,9 @@ function prepareDebPackage(arch: string) {
 			.pipe(replace('@@ARCHITECTURE@@', debArch))
 			.pipe(rename('DEBIAN/postinst'));
 
-		const templates = gulp.src('resources/linux/debian/templates.template', { base: '.' })
-			.pipe(replace('@@NAME@@', product.applicationName))
-			.pipe(rename('DEBIAN/templates'));
-
-		const all = es.merge(control, templates, postinst, postrm, prerm, desktops, appdata, workspaceMime, icon, bash_completion, zsh_completion, code);
+		// No DEBIAN/templates: the only debconf question upstream asks is whether to
+		// add the Microsoft apt repository, which this package does not do.
+		const all = es.merge(control, postinst, postrm, prerm, desktops, appdata, workspaceMime, icon, bash_completion, zsh_completion, code);
 
 		return all.pipe(vfs.dest(destination));
 	};
