@@ -58,15 +58,14 @@ function getLockedPackageVersion(packageName: string): string {
 }
 
 // Build
+// Only the workers the Terminal window can actually reach are built: the Monaco
+// worker, the Output view's link computer, and language detection (used by the
+// text editor models). The extension host, notebook, file search, profile
+// analysis and TextMate workers have no caller here.
 const vscodeEntryPoints = [
 	buildfile.workerEditor,
-	buildfile.workerExtensionHost,
-	buildfile.workerNotebook,
 	buildfile.workerLanguageDetection,
-	buildfile.workerLocalFileSearch,
-	buildfile.workerProfileAnalysis,
 	buildfile.workerOutputLinks,
-	buildfile.workerBackgroundTokenization,
 	buildfile.workbenchDesktop,
 	buildfile.code
 ].flat();

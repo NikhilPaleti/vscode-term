@@ -56,8 +56,6 @@ import '../workbench/services/extensionManagement/electron-browser/extensionMana
 import '../workbench/services/mcp/electron-browser/mcpGalleryManifestService.js';
 import '../workbench/services/mcp/electron-browser/mcpWorkbenchManagementService.js';
 import '../workbench/services/encryption/electron-browser/encryptionService.js';
-import '../workbench/services/imageResize/electron-browser/imageResizeService.js';
-import '../workbench/services/localTranscription/electron-browser/localTranscriptionService.js';
 import '../workbench/services/secrets/electron-browser/secretStorageService.js';
 import '../workbench/services/localization/electron-browser/languagePackService.js';
 import '../workbench/services/telemetry/electron-browser/telemetryService.js';
@@ -81,6 +79,7 @@ import '../platform/profiling/electron-browser/profilingService.js';
 import '../platform/telemetry/electron-browser/customEndpointTelemetryService.js';
 import '../platform/remoteTunnel/electron-browser/remoteTunnelService.js';
 import '../workbench/services/files/electron-browser/elevatedFileService.js';
+// ISearchService is kept: terminalContrib/links injects it to resolve file links.
 import '../workbench/services/search/electron-browser/searchService.js';
 import '../workbench/services/workingCopy/electron-browser/workingCopyHistoryService.js';
 import '../workbench/services/userDataSync/browser/userDataSyncEnablementService.js';
@@ -91,11 +90,9 @@ import '../platform/userDataProfile/electron-browser/userDataProfileStorageServi
 import '../workbench/services/auxiliaryWindow/electron-browser/auxiliaryWindowService.js';
 import '../platform/extensionManagement/electron-browser/extensionsProfileScannerService.js';
 import '../platform/sandbox/electron-browser/sandboxHelperService.js';
-import '../platform/webContentExtractor/electron-browser/webContentExtractorService.js';
 import '../workbench/services/agentHost/electron-browser/agentHostService.js';
 import '../platform/agentHost/electron-browser/remoteAgentHostService.js';
 import '../platform/agentHost/browser/agentHostEnablementService.js';
-import '../workbench/services/browserView/electron-browser/playwrightWorkbenchService.js';
 import '../workbench/services/process/electron-browser/processService.js';
 import '../workbench/services/power/electron-browser/powerService.js';
 

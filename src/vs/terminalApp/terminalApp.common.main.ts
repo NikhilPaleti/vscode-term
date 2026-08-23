@@ -143,7 +143,8 @@ import '../workbench/services/languageDetection/browser/languageDetectionWorkerS
 import '../editor/common/services/languageFeaturesService.js';
 import '../editor/common/services/semanticTokensStylingService.js';
 import '../editor/common/services/treeViewsDndService.js';
-import '../workbench/services/textMate/browser/textMateTokenizationFeature.contribution.js';
+// No TextMate: grammars only ever arrive from extensions, and nothing else
+// injects ITextMateTokenizationService. Editor tokenization uses tree-sitter.
 import '../workbench/services/treeSitter/browser/treeSitter.contribution.js';
 import '../workbench/services/userActivity/common/userActivityService.js';
 import '../workbench/services/userActivity/browser/userActivityBrowser.js';
