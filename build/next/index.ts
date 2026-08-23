@@ -90,9 +90,14 @@ const workerEntryPoints = [
 	'vs/workbench/services/textMate/browser/backgroundTokenization/worker/textMateTokenizationWorker.workerMain',
 ];
 
-// Desktop-only workers (use electron-browser)
+// The subset of the shared workers the Terminal window can reach: the Monaco
+// worker, the Output view's link computer, and language detection (used by the
+// text editor models). The extension host, notebook, file search and TextMate
+// workers have no caller here, and neither does the profile analysis worker.
 const desktopWorkerEntryPoints = [
-	'vs/platform/profiling/electron-browser/profileAnalysisWorkerMain',
+	'vs/editor/common/services/editorWebWorkerMain',
+	'vs/workbench/services/languageDetection/browser/languageDetectionWebWorkerMain',
+	'vs/workbench/contrib/output/common/outputLinkComputerMain',
 ];
 
 // Desktop workbench and code entry points. The only shipped window is the
@@ -100,9 +105,7 @@ const desktopWorkerEntryPoints = [
 // `vs/sessions/sessions.desktop.main` are not built.
 const desktopEntryPoints = [
 	'vs/terminalApp/terminalApp.desktop.main',
-	'vs/workbench/contrib/debug/node/telemetryApp',
 	'vs/platform/files/node/watcher/watcherMain',
-	'vs/platform/localTranscription/node/localTranscriptionMain',
 	'vs/platform/terminal/node/ptyHostMain',
 	'vs/platform/agentHost/node/agentHostMain',
 	'vs/platform/agentHost/node/diffWorkerMain',
@@ -163,7 +166,6 @@ function getEntryPointsForTarget(target: BuildTarget): string[] {
 	switch (target) {
 		case 'desktop':
 			return [
-				...workerEntryPoints,
 				...desktopWorkerEntryPoints,
 				...desktopEntryPoints,
 				...codeEntryPoints,

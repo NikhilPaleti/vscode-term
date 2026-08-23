@@ -24,9 +24,7 @@ export const workerBackgroundTokenization = createModuleDescription('vs/workbenc
 // and `vs/sessions/sessions.desktop.main` are intentionally not built. Their sources
 // remain in the tree because the Terminal window imports from `vs/workbench`.
 export const workbenchDesktop = [
-	createModuleDescription('vs/workbench/contrib/debug/node/telemetryApp'),
 	createModuleDescription('vs/platform/files/node/watcher/watcherMain'),
-	createModuleDescription('vs/platform/localTranscription/node/localTranscriptionMain'),
 	createModuleDescription('vs/platform/terminal/node/ptyHostMain'),
 	createModuleDescription('vs/platform/agentHost/node/agentHostMain'),
 	createModuleDescription('vs/platform/agentHost/node/diffWorkerMain'),
