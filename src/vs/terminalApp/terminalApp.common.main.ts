@@ -253,6 +253,20 @@ import '../workbench/contrib/processExplorer/browser/processExplorer.contributio
 // bell, command failure signals), so the service itself must exist.
 import './services/accessibilitySignal/browser/accessibilitySignalService.js';
 
+// Services whose only registration in the workbench lives in a contribution this
+// window does not load, but which surviving code still injects. Each of these is
+// the service module on its own, without the feature's UI: dropping the
+// registration instead would throw "depends on UNKNOWN service" at runtime.
+// `npm run terminal-app-di-check` guards this.
+import '../workbench/contrib/snippets/browser/snippets.service.contribution.js';
+import '../workbench/contrib/inlineCompletions/browser/renameSymbolTrackerService.js';
+import '../workbench/contrib/speech/browser/speech.contribution.js';
+import './services/extensions/browser/extensionsWorkbenchService.js';
+import './services/bulkEdit/browser/bulkEditService.js';
+import './services/accessibility/browser/accessibleViewService.js';
+import './services/accessibility/browser/chatCodeBlockContextProviderService.js';
+import './services/terminal/browser/terminalChatService.js';
+
 //#endregion
 
 

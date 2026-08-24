@@ -38,6 +38,16 @@ const FORBIDDEN = [
 	'src/vs/workbench/contrib/welcomeGettingStarted/',
 ];
 
+/**
+ * Leaf modules inside a forbidden area that carry only a service identifier or
+ * plain types, so depending on them does not pull in the feature. Each entry
+ * must stay a leaf: if one grows real imports, the guard stops protecting us.
+ */
+const ALLOWED = new Set([
+	// Optional dependency of the accessible view; see contrib/chat/browser/chatCodeBlockContext.ts.
+	'src/vs/workbench/contrib/chat/browser/chatCodeBlockContext.ts',
+]);
+
 const depsCache = new Map();
 
 /** Resolved, value-level (non type-only) relative imports of a module. */
@@ -99,7 +109,7 @@ while (stack.length) {
 	}
 	seen.add(file);
 
-	const forbidden = FORBIDDEN.find(area => file.includes(area));
+	const forbidden = !ALLOWED.has(file) && FORBIDDEN.find(area => file.includes(area));
 	if (forbidden) {
 		violations.push({ file, area: forbidden });
 		continue; // do not walk into it; the entry edge is what matters

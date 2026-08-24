@@ -30,7 +30,7 @@ import { ChatAttachmentModel } from './attachments/chatAttachmentModel.js';
 import { IChatEditorOptions } from './widgetHosts/editor/chatEditor.js';
 import { ChatInputPart } from './widget/input/chatInputPart.js';
 import { ChatWidget, IChatWidgetContrib } from './widget/chatWidget.js';
-import { ICodeBlockActionContext, ICodeBlockRenderOptions } from './widget/chatContentParts/codeBlockPart.js';
+import { ICodeBlockRenderOptions } from './widget/chatContentParts/codeBlockPart.js';
 import { AgentSessionTarget } from './agentSessions/agentSessions.js';
 
 export { ChatOutline } from './chatOutline.js';
@@ -565,16 +565,10 @@ export function setModelPreservingInputTypedWhileLoading(widget: IChatWidget, in
 }
 
 
-export interface ICodeBlockActionContextProvider {
-	getCodeBlockContext(editor?: ICodeEditor): ICodeBlockActionContext | undefined;
-}
-
-export const IChatCodeBlockContextProviderService = createDecorator<IChatCodeBlockContextProviderService>('chatCodeBlockContextProviderService');
-export interface IChatCodeBlockContextProviderService {
-	readonly _serviceBrand: undefined;
-	readonly providers: ICodeBlockActionContextProvider[];
-	registerProvider(provider: ICodeBlockActionContextProvider, id: string): IDisposable;
-}
+// Declared in `chatCodeBlockContext.ts` so it can be depended on without pulling
+// in this module; re-exported here for existing callers.
+export { IChatCodeBlockContextProviderService } from './chatCodeBlockContext.js';
+export type { ICodeBlockActionContextProvider } from './chatCodeBlockContext.js';
 
 export const ChatViewId = `workbench.panel.chat.view.${CHAT_PROVIDER_ID}`;
 export const ChatViewContainerId = 'workbench.panel.chat';
