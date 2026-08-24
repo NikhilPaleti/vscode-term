@@ -1,6 +1,6 @@
 {
 	"nameShort": "VSC Term",
-	"nameLong": "Visual Studio Code - Exclusive Terminal",
+	"nameLong": "Visual Studio Code - Minimal Terminal",
 	"applicationName": "vsc-terminal",
 	"dataFolderName": ".vsc-terminal",
 	"sharedDataFolderName": ".vsc-terminal-shared",
