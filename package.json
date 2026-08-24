@@ -29,6 +29,7 @@
     "build-fast-extensions": "npm run gulp copy-codicons compile-extensions compile-extension-media",
     "typecheck-client": "tsc --project ./src/tsconfig.json --noEmit --skipLibCheck",
     "terminal-app-budget": "node scripts/terminal-app-budget.mjs",
+    "terminal-app-di-check": "node scripts/terminal-app-di-check.mjs",
     "codex:gen-protocol": "node build/codex/generate-protocol.mjs",
     "codex:check-protocol": "node build/codex/check-protocol-sync.ts",
     "watch": "npm-run-all2 -lp watch-client-transpile watch-client watch-extensions watch-copilot",

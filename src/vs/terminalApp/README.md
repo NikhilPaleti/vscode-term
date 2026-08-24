@@ -61,6 +61,31 @@ The terminal itself is imported feature by feature rather than through
 `contrib/terminal/terminal.all.ts`, which pulls in the chat, chat-agent-tools and
 voice terminal contributions.
 
+## Services this window has to provide itself
+
+Dropping a contribution also drops the `registerSingleton` calls it happened to
+own, which the compiler and the dependency budget cannot see: surviving code that
+injects such a service fails at runtime with "depends on UNKNOWN service". Some
+of those services are therefore registered here, in [`services/`](services/),
+without the feature UI they normally come with:
+
+| Service | Normally registered by | Here |
+| --- | --- | --- |
+| `IExtensionService` | `nativeExtensionService` | `NullExtensionService`, so no extension host is spawned |
+| `IAccessibilitySignalService` | the accessibility-signals contribution (reaches debug) | the service alone |
+| `IAccessibleViewService` | the accessibility contribution (reaches chat, notebook, debug) | the service alone, so the terminal accessible view still works |
+| `IExtensionsWorkbenchService` | the Extensions viewlet | the service alone, for the settings and keybindings editors |
+| `IBulkEditService` | `contrib/bulkEdit` (reaches notebook) | a text-only implementation |
+| `ITerminalChatService` | `terminalContrib/chat` (injects `IChatService`) | a no-op: every terminal here is user-created |
+| `IChatCodeBlockContextProviderService` | the chat contribution | a no-op, for the accessible view |
+
+`npm run terminal-app-di-check` walks the graph, collects what is registered
+against what is injected, and fails on the difference. It resolves decorators to
+service **ids**, since `refineServiceDecorator` means several decorator names can
+share one id. It carries a small allowlist of ids that are legitimately absent --
+provided scoped per editor group, or registered in the shared process where their
+consumers actually run -- each with the reason.
+
 ## The dependency budget
 
 `npm run terminal-app-budget` walks the module graph from
