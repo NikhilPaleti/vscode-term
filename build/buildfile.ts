@@ -26,10 +26,11 @@ export const workerBackgroundTokenization = createModuleDescription('vs/workbenc
 export const workbenchDesktop = [
 	createModuleDescription('vs/platform/files/node/watcher/watcherMain'),
 	createModuleDescription('vs/platform/terminal/node/ptyHostMain'),
-	createModuleDescription('vs/platform/agentHost/node/agentHostMain'),
-	createModuleDescription('vs/platform/agentHost/node/diffWorkerMain'),
-	// `vs/workbench/api/node/extensionHostProcess` is not built: the Terminal
-	// window registers `NullExtensionService`, so no extension host is spawned.
+	// Remove unused modules:
+	// - `vs/workbench/api/node/extensionHostProcess`: Terminal registers `NullExtensionService`,
+	// so no extension host is spawned.
+	// - `vs/platform/agentHost/node/{agentHostMain,diffWorkerMain}`: No window ever requests
+	// connection to an agent (no agent host).
 	createModuleDescription('vs/terminalApp/terminalApp.desktop.main')
 ];
 

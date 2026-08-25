@@ -154,8 +154,13 @@ import '../workbench/services/editor/common/customEditorLabelService.js';
 import '../workbench/services/dataChannel/browser/dataChannelService.js';
 import '../workbench/services/inlineCompletions/common/inlineCompletionsUnification.js';
 import '../workbench/services/chat/common/chatEntitlementService.js';
-import '../workbench/services/agentHost/common/agentHostResourceService.js';
-import '../platform/agentHost/browser/agentHostConnectionsService.js';
+// NOTE: the agent host services are deliberately NOT registered.
+//
+// The agent host is a separate node process that runs coding agents, serves them
+// over a MessagePort and WebSocket server, and publishes a discoverable socket
+// Nothing in terminal-only window can drive it.
+//
+// Agents running *inside* terminal (Claude Code, Copilot CLI, ...) are unaffected.
 import '../workbench/services/log/common/defaultLogLevels.js';
 
 import { InstantiationType, registerSingleton } from '../platform/instantiation/common/extensions.js';
