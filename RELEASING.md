@@ -266,12 +266,9 @@ missing-file error.
   `resources/linux/rpm/code.xpm`). Filenames and identity are correct; only the
   images need replacing.
 - **Windows and Linux builds have never been produced.** Everything about them
-  here is derived from the build scripts, not from a completed run. macOS is the
-  only path exercised so far, and only via the dev launch — **the full gulp
-  packaging task has not been run on any platform**. Expect the first run of it to
-  need fixing; the most likely spot is the checksum list in
-  [`build/gulpfile.vscode.ts`](build/gulpfile.vscode.ts), which throws if a listed
-  file is missing.
+  here is derived from the build scripts, not from a completed run. `vscode-darwin-arm64-min`
+  has been run successfully and produces a working `.app`; the win32 and linux
+  targets, and every installer task, are still untried.
 - Run `desktop-file-validate` on `resources/linux/*.desktop` the first time you
   build on Linux. The tool does not exist on macOS, so those files have only been
   reviewed by inspection.
