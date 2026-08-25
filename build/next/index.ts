@@ -107,10 +107,9 @@ const desktopEntryPoints = [
 	'vs/terminalApp/terminalApp.desktop.main',
 	'vs/platform/files/node/watcher/watcherMain',
 	'vs/platform/terminal/node/ptyHostMain',
-	'vs/platform/agentHost/node/agentHostMain',
-	'vs/platform/agentHost/node/diffWorkerMain',
-	// `vs/workbench/api/node/extensionHostProcess` is not built: the Terminal
-	// window registers `NullExtensionService`, so no extension host is spawned.
+	// Not built for the desktop app:
+	// vs/workbench/api/node/extensionHostProcess
+	// vs/platform/agentHost/node/{agentHostMain,diffWorkerMain}
 ];
 
 const codeEntryPoints = [
