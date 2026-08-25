@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import es from 'event-stream';
 import vfs from 'vinyl-fs';
+import VinylFile from 'vinyl';
 import electron from '@vscode/gulp-electron';
 import * as util from './lib/util.ts';
 import { getVersion } from './lib/getVersion.ts';
@@ -31,7 +32,7 @@ import { compileBuildWithoutManglingTask, compileBuildWithManglingTask } from '.
 // compiles or packages them.
 import { compileAllExtensionsBuildTask } from './gulpfile.extensions.ts';
 import { copyCodiconsTask } from './lib/compilation.ts';
-import { ensureCopilotPlatformPackage, getCopilotExcludeFilter, getCopilotRuntimePrebuildFiles, getCopilotTgrepExcludeFilter, getMxcExcludeFilter, getRipgrepExcludeFilter } from './lib/copilot.ts';
+import { getCopilotExcludeFilter, getCopilotTgrepExcludeFilter, getMxcExcludeFilter, getRipgrepExcludeFilter } from './lib/copilot.ts';
 import { ensureOSProxyResolverPlatformPackage, getOSProxyResolverExcludeFilter, getOSProxyResolverPlatformFiles } from './lib/osProxyResolver.ts';
 import { readAgentSdkResults } from './agent-sdk/common.ts';
 import { readDictationRuntimeResults } from './dictation-runtime/common.ts';
@@ -371,11 +372,14 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 			.pipe(filter(depFilterPattern))
 			.pipe(util.cleanNodeModules(path.join(import.meta.dirname, '.moduleignore')))
 			.pipe(util.cleanNodeModules(path.join(import.meta.dirname, `.moduleignore.${process.platform}`)));
-		ensureCopilotPlatformPackage(platform, arch);
-		const copilotRuntimePrebuilds = gulp.src(getCopilotRuntimePrebuildFiles(platform, arch), { base: '.', dot: true, allowEmpty: true });
+		// The Copilot CLI platform package (`@github/copilot-<os>-<arch>`) is
+		// not shipped. `.moduleignore` strips every `@github/copilot-*` platform
+		// package, and upstream re-adds the target one here so the agent host can spawn
+		// the CLI. This window has no agent host, and the only remaining references to
+		// `@github/copilot` are version strings in the About dialog.
 		ensureOSProxyResolverPlatformPackage(platform, arch);
 		const osProxyResolverPlatformPackage = gulp.src(getOSProxyResolverPlatformFiles(platform, arch), { base: '.', dot: true, allowEmpty: true });
-		const deps = es.merge(cleanedDeps, copilotRuntimePrebuilds, osProxyResolverPlatformPackage)
+		const deps = es.merge(cleanedDeps, osProxyResolverPlatformPackage)
 			.pipe(filter(getCopilotExcludeFilter(platform, arch)))
 			.pipe(filter(getCopilotTgrepExcludeFilter(platform, arch)))
 			.pipe(filter(getRipgrepExcludeFilter(platform, arch)))
@@ -388,14 +392,7 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 			.pipe(createAsar(path.join(process.cwd(), 'node_modules'), [
 				'**/*.node',
 				'**/@vscode/ripgrep-universal/bin/**',
-				// Only the platform-specific Copilot CLI packages (`@github/copilot-<os>-<arch>`)
-				// need to be unpacked: the CLI is spawned as a subprocess and is a
-				// self-locating bundle that memory-maps files and resolves its native
-				// addons / sub-binaries relative to its own on-disk location, so it cannot
-				// run from inside the archive. `@github/copilot-sdk` is intentionally NOT
-				// matched here — it is pure JavaScript that the agent host loads via
-				// `import` (ASAR-aware), so it stays in the archive.
-				'**/@github/copilot-{darwin,linux,linuxmusl,win32}-*/**',
+				// The `@github/copilot-<os>-<arch>` unpack rule is removed alongisde CLI.
 				'**/@microsoft/mxc-sdk/bin/**',
 				'**/node-pty/build/Release/*',
 				'**/node-pty/build/Release/conpty/*',
@@ -424,6 +421,15 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 				'node_modules/zod/**'
 			], 'node_modules.asar'));
 
+		// No built-in extensions are shipped, but the directory itself must exist.
+		// The shared process runs `scanDefaultSystemExtensions` regardless, and
+		// resolving a *nonexistent* path throws an uncaught exception.
+		const extensionsPlaceholder = es.readArray([new VinylFile({
+			path: path.join(root, 'extensions', '.keep'),
+			base: root,
+			contents: Buffer.alloc(0)
+		})]);
+
 		const mergeStreams = [
 			packageJsonStream,
 			productJsonStream,
@@ -431,6 +437,7 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 			api,
 			telemetry,
 			sources,
+			extensionsPlaceholder,
 			deps
 		];
 		let all = es.merge(...mergeStreams);
