@@ -304,7 +304,6 @@ import '../workbench/contrib/terminalContrib/stickyScroll/browser/terminal.stick
 import '../workbench/contrib/terminalContrib/suggest/browser/terminal.suggest.contribution.js';
 import '../workbench/contrib/terminalContrib/telemetry/browser/terminal.telemetry.contribution.js';
 import '../workbench/contrib/terminalContrib/typeAhead/browser/terminal.typeAhead.contribution.js';
-import '../workbench/contrib/terminalContrib/wslRecommendation/browser/terminal.wslRecommendation.contribution.js';
 import '../workbench/contrib/terminalContrib/zoom/browser/terminal.zoom.contribution.js';
 
 //#endregion
