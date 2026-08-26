@@ -186,7 +186,10 @@ task.task(bundleVSCodeTask);
 const sourceMappingURLBase = `https://main.vscode-cdn.net/sourcemaps/${commit}`;
 const isCI = !!process.env['CI'] || !!process.env['BUILD_ARTIFACTSTAGINGDIRECTORY'] || !!process.env['GITHUB_WORKSPACE'];
 const useCdnSourceMapsForPackagingTasks = isCI;
-const stripSourceMapsInPackagingTasks = isCI;
+// Strip source maps when packaging.
+// VSCode needs this to symbolize crash reports against a CDN. We have no CDN
+// We will have to debug via `scripts/code.sh`
+const stripSourceMapsInPackagingTasks = true;
 const minifyVSCodeTask = task.define('minify-vscode', task.series(
 	bundleVSCodeTask,
 	util.rimraf('out-vscode-min'),

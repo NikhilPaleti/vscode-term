@@ -278,3 +278,25 @@ koffi/**
 # in websocket's browser.js inside a try/catch with a globalThis fallback,
 # so it is unnecessary in the browsers/runtimes VS Code supports.
 es5-ext/**
+
+# Terminal window: packages with no reachable consumer.
+#
+# Each of these is declared only by the root package and is not referenced by
+# any module the Terminal window loads.
+#
+# NOT stripped, despite also being unreferenced from our own sources, because
+# another shipped package declares them:
+#   opentype.js  <- @xterm/addon-ligatures (terminal font ligatures)
+#   zod          <- @vscode/sandbox-runtime (spawned as a standalone subprocess)
+#   axios        <- @microsoft/dev-tunnels-management
+#   kerberos     <- proxy-agent-negotiate (proxy authentication)
+
+# The browserView / playwright workbench service is not loaded.
+playwright-core/**
+chrome-remote-interface/**
+
+# Math rendering for notebook and markdown output; neither is loaded.
+katex/**
+
+# Copilot-related SDK; the agent host that used it has been removed.
+@microsoft/mxc-sdk/**
