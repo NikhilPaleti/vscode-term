@@ -510,6 +510,14 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 				'!version',
 				...(platform === 'darwin' ? ['!**/Contents/Applications', '!**/Contents/Applications/**'] : []),
 				...(platform === 'win32' ? ['!**/electron_proxy.exe'] : []),
+			], { dot: true }))
+			// Chromium ships a `locale.pak` for every UI language it supports
+			// VS Code supports language pack extensions; we don't.
+			.pipe(filter([
+				'**',
+				'!**/*.lproj/**',
+				'**/en.lproj/**',
+				'**/en_*.lproj/**',
 			], { dot: true }));
 
 		if (platform === 'linux') {
