@@ -8,7 +8,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import es from 'event-stream';
 import vfs from 'vinyl-fs';
-import VinylFile from 'vinyl';
 import electron from '@vscode/gulp-electron';
 import * as util from './lib/util.ts';
 import { getVersion } from './lib/getVersion.ts';
@@ -424,14 +423,17 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 				'node_modules/zod/**'
 			], 'node_modules.asar'));
 
-		// No built-in extensions are shipped, but the directory itself must exist.
-		// The shared process runs `scanDefaultSystemExtensions` regardless, and
-		// resolving a *nonexistent* path throws an uncaught exception.
-		const extensionsPlaceholder = es.readArray([new VinylFile({
-			path: path.join(root, 'extensions', '.keep'),
-			base: root,
-			contents: Buffer.alloc(0)
-		})]);
+		// Shipping theme extensions to allow Light/Dark mode switch
+		// No extension host, means no extension can execute code - Only themeing.
+		const themeExtensions = gulp.src([
+			'extensions/theme-*/**',
+			// Authoring-time only: seti ships the tooling that generates its icon font,
+			// and the docs/manifests are not needed at runtime. ThirdPartyNotices.txt is
+			// kept: it carries the icon licences.
+			'!extensions/theme-*/{src,test,build}/**',
+			'!extensions/theme-*/*.md',
+			'!extensions/theme-*/cgmanifest.json',
+		], { base: '.', dot: true });
 
 		const mergeStreams = [
 			packageJsonStream,
@@ -440,7 +442,7 @@ function packageTask(platform: string, arch: string, sourceFolderName: string, d
 			api,
 			telemetry,
 			sources,
-			extensionsPlaceholder,
+			themeExtensions,
 			deps
 		];
 		let all = es.merge(...mergeStreams);

@@ -14,6 +14,6 @@ import { ExtensionsWorkbenchService } from '../../../../workbench/contrib/extens
 // the service.
 //
 // Registered `Delayed` rather than the workbench's `Eager`: eager registration
-// exists to drive extension auto-updates, and with `NullExtensionService` there
-// is nothing installed to update.
+// exists to drive extension auto-updates, and nothing here can be updated: the
+// only extensions in this window are the built-in themes shipped inside the app.
 registerSingleton(IExtensionsWorkbenchService, ExtensionsWorkbenchService, InstantiationType.Delayed);
